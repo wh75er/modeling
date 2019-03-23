@@ -43,7 +43,7 @@ if __name__ == "__main__":
     picard_f = lambda x: eval(str(picard_ap))
 
     table = PrettyTable()
-    table.field_names = ["X", "Picard method", "Euler method", "Modified Euler method", "Runge-Kutta method"]
+    table.field_names = ["X", "Picard method", "Explicit Euler method", "Unexplicit Euler method", "Runge-Kutta method"]
     yp_eulerExp = 0
     yp_euler = 0
     x = left
