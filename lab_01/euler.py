@@ -4,4 +4,4 @@ def euler_explicit(yp, x, h, f):
 
 def euler(yp, x, h, f):
     z = f(x, yp)
-    return yp + h/2*(z+f(x, yp+h*z))
+    return yp + h*f(x, yp+h*z)
