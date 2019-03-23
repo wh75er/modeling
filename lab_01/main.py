@@ -41,19 +41,20 @@ if __name__ == "__main__":
     picard_ap = picard(0, 0, approximation, eq)
 
     picard_f = lambda x: eval(str(picard_ap))
-    euler_roots = euler_explicit(left, right, h, 0, eq.get_func())
-    eulerM_roots = euler(left, right, h, 0, eq.get_func())
 
     table = PrettyTable()
     table.field_names = ["X", "Picard method", "Euler method", "Modified Euler method", "Runge-Kutta method"]
-    k = 0
+    yp_eulerExp = 0
+    yp_euler = 0
     x = left
     while x <= right:
+        yp_eulerExp = euler_explicit(yp_eulerExp, x, h, eq.get_func())
+        yp_euler = euler(yp_euler, x, h, eq.get_func())
+
         table.add_row(["{:.1f}".format(x), "{:.4f}".format(picard_f(x))
-                        , "{:.4f}".format(euler_roots[k])
-                        , "{:.4f}".format(eulerM_roots[k])
+                        , "{:.4f}".format(yp_eulerExp)
+                        , "{:.4f}".format(yp_euler)
                         , 0])
-        k+=1
         x+=h
 
     print(table)
