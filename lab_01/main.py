@@ -39,18 +39,7 @@ class equation():
     def calculate(self, x, y):
         return self.func(x, y)
 
-
-if __name__ == "__main__":
-    print()
-    #eq = equation(int(input("Input pow of x: ")), int(input("Input pow of y: ")))
-    eq = equation()
-    #approximation = (int(input("Input approximation value: ")))
-    approximation = 5
-
-    left = (float(input("Input left border: ")))
-    right = (float(input("Input right border: ")))
-    h = (float(input("Input step: ")))
-
+def createTable(eq, approximation, left, right, h):
     picard_ap = picard(0, 0, approximation, eq)
 
     picard_f = lambda x: eval(str(picard_ap))
@@ -72,4 +61,22 @@ if __name__ == "__main__":
                         , "{:.4f}".format(yp_runge)])
         x+=h
 
+    print("Table for Y' = ", eq.equation, " equation")
     print(table)
+
+
+if __name__ == "__main__":
+    print()
+    #eq = equation(int(input("Input pow of x: ")), int(input("Input pow of y: ")))
+    eq = equation()
+    eq2 = equation(2, 2)
+    approximation = (int(input("Input approximation value: ")))
+    #approximation = 5
+
+    print()
+    left = (float(input("Input left border: ")))
+    right = (float(input("Input right border: ")))
+    h = (float(input("Input step: ")))
+
+    createTable(eq, approximation, left, right, h)
+    createTable(eq2, approximation, left, right, h)
