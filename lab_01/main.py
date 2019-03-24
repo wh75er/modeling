@@ -2,6 +2,18 @@ from picard import *
 from euler import *
 from prettytable import PrettyTable
 
+#
+#   Cauchy problem resolving:
+#
+#   U'(x) = f(x, u);
+#       x0 < x < xr;
+#       v(x0) = v0;
+#       approximation = n;
+#
+#       y0(t) = v0;
+#
+
+
 class equation():
     def __init__(self, pow_x=None, pow_y=None):
         self.pow_x = 1
