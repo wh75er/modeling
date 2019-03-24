@@ -1,5 +1,6 @@
 from picard import *
 from euler import *
+from rungeKutta import rungeKuttaSecOrder
 from prettytable import PrettyTable
 
 #
@@ -58,15 +59,17 @@ if __name__ == "__main__":
     table.field_names = ["X", "Picard method", "Explicit Euler method", "Unexplicit Euler method", "Runge-Kutta method"]
     yp_eulerExp = 0
     yp_euler = 0
+    yp_runge = 0
     x = left
     while x <= right:
         yp_eulerExp = euler_explicit(yp_eulerExp, x, h, eq.get_func())
         yp_euler = euler(yp_euler, x, h, eq.get_func())
+        yp_runge = rungeKuttaSecOrder(yp_runge, x, h, eq.get_func())
 
         table.add_row(["{:.1f}".format(x), "{:.4f}".format(picard_f(x))
                         , "{:.4f}".format(yp_eulerExp)
                         , "{:.4f}".format(yp_euler)
-                        , 0])
+                        , "{:.4f}".format(yp_runge)])
         x+=h
 
     print(table)
