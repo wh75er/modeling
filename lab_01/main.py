@@ -3,6 +3,8 @@ from euler import *
 from rungeKutta import rungeKuttaSecOrder
 from prettytable import PrettyTable
 
+from os import system
+
 #
 #   Cauchy problem resolving:
 #
@@ -39,10 +41,18 @@ class equation():
     def calculate(self, x, y):
         return self.func(x, y)
 
-def createTable(eq, approximation, left, right, h):
-    picard_ap = picard(0, 0, approximation, eq)
+def f1(x, y):
+    return x + y
 
-    picard_f = lambda x: eval(str(picard_ap))
+def f2(x, y):
+    return x**2 + y**2
+
+def createTable(eq, approximation, left, right, h):
+    func = f1
+    picard = picard1
+    if(eq.get_pow_x == 2):
+        func = f2
+        picard = picard2
 
     table = PrettyTable()
     table.field_names = ["X", "Picard method", "Explicit Euler method", "Unexplicit Euler method", "Runge-Kutta method"]
@@ -51,11 +61,12 @@ def createTable(eq, approximation, left, right, h):
     yp_runge = 0
     x = left
     while x <= right:
-        yp_eulerExp = euler_explicit(yp_eulerExp, x, h, eq.get_func())
-        yp_euler = euler(yp_euler, x, h, eq.get_func())
-        yp_runge = rungeKuttaSecOrder(yp_runge, x, h, eq.get_func())
+        print("\rprocessing...{:.0f}%".format((x*100)/right), end="\n"); 
+        yp_eulerExp = euler_explicit(yp_eulerExp, x, h, func)
+        yp_euler = euler(yp_euler, x, h, func)
+        yp_runge = rungeKuttaSecOrder(yp_runge, x, h, func)
 
-        table.add_row(["{:.1f}".format(x), "{:.4f}".format(picard_f(x))
+        table.add_row(["{:.1f}".format(x), "{:.4f}".format(picard(x, approximation))
                         , "{:.4f}".format(yp_eulerExp)
                         , "{:.4f}".format(yp_euler)
                         , "{:.4f}".format(yp_runge)])
@@ -68,15 +79,15 @@ def createTable(eq, approximation, left, right, h):
 if __name__ == "__main__":
     print()
     #eq = equation(int(input("Input pow of x: ")), int(input("Input pow of y: ")))
-    eq = equation()
+    #eq = equation()
     eq2 = equation(2, 2)
-    approximation = (int(input("Input approximation value: ")))
-    #approximation = 5
+    #approximation = (int(input("Input approximation value: ")))
+    approximation = 2
 
     print()
     left = (float(input("Input left border: ")))
     right = (float(input("Input right border: ")))
     h = (float(input("Input step: ")))
 
-    createTable(eq, approximation, left, right, h)
+    #createTable(eq, approximation, left, right, h)
     createTable(eq2, approximation, left, right, h)
