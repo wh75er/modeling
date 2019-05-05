@@ -50,7 +50,7 @@ def f2(x, y):
 def createTable(eq, approximation, left, right, h):
     func = f1
     picard = picard1
-    if(eq.get_pow_x == 2):
+    if(eq.get_pow_x() == 2):
         func = f2
         picard = picard2
 
@@ -65,8 +65,8 @@ def createTable(eq, approximation, left, right, h):
         yp_eulerExp = euler_explicit(yp_eulerExp, x, h, func)
         yp_euler = euler(yp_euler, x, h, func)
         yp_runge = rungeKuttaSecOrder(yp_runge, x, h, func)
-
-        table.add_row(["{:.1f}".format(x), "{:.4f}".format(picard(x, approximation))
+        if(x + h > right):
+            table.add_row(["{:.1f}".format(x), "{:.4f}".format(0)#picard(x, approximation))
                         , "{:.4f}".format(yp_eulerExp)
                         , "{:.4f}".format(yp_euler)
                         , "{:.4f}".format(yp_runge)])
@@ -82,12 +82,15 @@ if __name__ == "__main__":
     #eq = equation()
     eq2 = equation(2, 2)
     #approximation = (int(input("Input approximation value: ")))
-    approximation = 2
+    approximation = 6
 
     print()
-    left = (float(input("Input left border: ")))
-    right = (float(input("Input right border: ")))
-    h = (float(input("Input step: ")))
+    #left = (float(input("Input left border: ")))
+    #right = (float(input("Input right border: ")))
+    #h = (float(input("Input step: ")))
+    h = 1e-8
+    left = 0
+    right = 2
 
     #createTable(eq, approximation, left, right, h)
     createTable(eq2, approximation, left, right, h)
