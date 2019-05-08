@@ -18,11 +18,11 @@ def k(x):
 """
 
 def u0(x):
-    return d.F0/(2*d.l*d.k0) * (x-d.l)**2 + d.Tenv
+    return (d.F0/(2*d.k0) - x)**2 + (d.kN * d.F0)/(d.alphaN * d.k0) - 2*d.l + d.Tenv - (d.F0/(2*d.k0) - d.l)**2
 def u0I(x):
-    return d.F0/(d.l*d.k0) * (x-d.l)
+    return -2 * (d.F0/(2*d.k0) - x)
 def u0II(x):
-    return d.F0/(d.l*d.k0)
+    return 2
 
 def u1(x):
     return (x**2 - d.l**2)**2
@@ -39,9 +39,9 @@ def u2II(x):
     return 72*x**7 - 90*x**4*d.l**3 + 18*x*d.l**6
 
 def u3(x):
-    return (x**4 - d.l**4)**4
+    return x**3 * (x**2 - d.l**2)**2
 def u3I(x):
-    return 16*x**15 - 48*x**11*d.l**4 + 48*x**7*d.l**8 - d.l**12
+    return x**2 * (x**2 - d.l**2) * (7*x**2 - 3*d.l**2)
 def u3II(x):
-    return 240*x**14 - 528*x**10*d.l**4 + 336*x**6*d.l**8
+    return 42*x**5 - 40*d.l**2*x**3 + 6*d.l**4*x
 
