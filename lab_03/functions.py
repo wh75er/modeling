@@ -17,15 +17,12 @@ def k(x):
 
 """
 
-k1 = lambda x : log(d.F0/k(x))
-k2 = lambda x : d.F0 * (k(x) - alpha(x))/(k(x) * alpha(x) * exp(d.l)) + d.Tenv
-
 def u0(x):
-    return exp(k1(x) - x) + k2(x)
+    return d.F0/(2*d.l*d.k0) * (x-d.l)**2 + d.Tenv
 def u0I(x):
-    return -exp(k1(x) - x)
+    return d.F0/(d.l*d.k0) * (x-d.l)
 def u0II(x):
-    return exp(k1(x) - x)
+    return d.F0/(d.l*d.k0)
 
 def u1(x):
     return (x**2 - d.l**2)**2

@@ -8,14 +8,14 @@
 """
 
 x0 = 0
-l = 10              # Length of the rod (cm)
-R = 0.5             # Radius of the rod (cm)
-Tenv = 300          # Ambient temperature (K)
-F0 = 100            # Heat flux density (W / (cm^2 * K))
-k0 = 0.2            # Coefficient of thermal conductivity at the beginning of the rod (W / (cm * K))
-kN = 0.5            # Coefficient of thermal conductivity at the end of the rod (W / (cm * K))
-alpha0 = 1e-2       # Heat transfer coefficient at the beginning of the rod (W / (cm^2 * K))
-alphaN = 9e-3       # Heat transfer coefficient at the end of the rod (W / (cm^2 * K))
+l = 10              
+R = 0.5             
+Tenv = 300          
+F0 = 100            
+k0 = 0.2            
+kN = 0.5            
+alpha0 = 1e-2       
+alphaN = 9e-3       
 h = 1e-2
 bk = (kN * l) / (kN - k0)
 ak = - k0 * bk

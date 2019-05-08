@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
-    c1, c2, c3 = collocation(0, d.l//2, d.l)
+    c1, c2, c3 = collocation(2, 7, 10)
 
     h = 0.1
     
