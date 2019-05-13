@@ -48,16 +48,19 @@ def getCoeffs():
 
 def getLeftBoundaryCoeffs():
     xHalf = getHalfRight(d.x0)
-    pHalf = p(d.x0+d.h)
-    fHalf = f(d.x0+d.h)
+    p1 = p(d.x0 + d.h)
+    f1 = f(d.x0 + d.h)
+
     p0 = p(d.x0)
     f0 = f(d.x0)
 
-    k0 = xHalf + (d.h**2 * pHalf) / 8 + (d.h**2 * p0) / 4
-    m0 = d.h**2 * pHalf - xHalf
-    pO = d.h * f0 + d.h**2 / 4 * (fHalf + f0)
+    pHalf = (p0 + p1) / 2
 
-    return k0, m0, pO
+    k0 = xHalf + d.h**2 * pHalf / 8 + d.h**2 * p0 / 4
+    m0 = d.h**2 * pHalf / 8 - xHalf
+    P0 = d.h * d.F0 + d.h**2 * (3 * f0 + f1) / 4
+
+    return k0, m0, P0
 
 def getRightBoundaryCoeffs():
     xHalf = getHalfLeft(d.l)
