@@ -1,5 +1,9 @@
 from math import exp, log
 import data as d
+from numpy import arange
+
+"""
+"""
 
 def alpha(x):
     return d.a_alpha/(x-d.b_alpha)
@@ -7,41 +11,61 @@ def alpha(x):
 def k(x):
     return d.ak/(x-d.bk)
 
-"""
- ____            _
-| __ )  __ _ ___(_)___
-|  _ \ / _` / __| / __|
-| |_) | (_| \__ \ \__ \
-|____/ \__,_|___/_|___/
+def p(x):
+    return (2 * alpha(x)) / d.R
 
+def f(x):
+    return (2*alpha(x)) / d.R * d.Tenv
 
 """
+  ____            __  __
+ / ___|___   ___ / _|/ _|___
+| |   / _ \ / _ \ |_| |_/ __|
+| |__| (_) |  __/  _|  _\__ \
+ \____\___/ \___|_| |_| |___/
 
-def u0(x):
-    return (d.F0/(2*d.k0) - x)**2 + d.kN/d.alphaN * (d.F0/d.k0 - 2*d.l) - (d.F0/(2*d.k0) - d.l)**2 + d.Tenv
-def u0I(x):
-    return 2*x - d.F0/d.k0
-def u0II(x):
-    return 2
+"""
 
-def u1(x):
-    return (x**2 - d.l**2)**2
-def u1I(x):
-    return 4*x**3 - 4*x*d.l**2
-def u1II(x):
-    return 12*x**2 - 4*d.l**2
+def getHalfLeft(x):
+    return (2 * k(x) * k(x-d.h)) / (k(x) + k(x-d.h))
 
-def u2(x):
-    return (x**3 - d.l**3)**3
-def u2I(x):
-    return 9*x**8 - 18*x**5*d.l**3 + 9*x**2*d.l**6
-def u2II(x):
-    return 72*x**7 - 90*x**4*d.l**3 + 18*x*d.l**6
+def getHalfRight(x):
+    return (2 * k(x) * k(x+d.h)) / (k(x) + k(x+d.h))
 
-def u3(x):
-    return x**3 * (x**2 - d.l**2)**2
-def u3I(x):
-    return x**2 * (x**2 - d.l**2) * (7*x**2 - 3*d.l**2)
-def u3II(x):
-    return 42*x**5 - 40*d.l**2*x**3 + 6*d.l**4*x
+def getCoeffs():
+    A = []
+    B = []
+    C = []
+    D = []
 
+    for x in arange(d.x0, d.l+d.h, d.h):
+        A.append( getHalfLeft(x) / d.h )
+        C.append( getHalfRight(x) / d.h )
+        B.append( A[-1] + C[-1] + p(x) * d.h)
+        D.append( f(x) * d.h )
+    
+    return A, B, C, D
+
+def getLeftBoundaryCoeffs():
+    xHalf = getHalfRight(d.x0)
+    pHalf = p(d.x0+d.h)
+    fHalf = f(d.x0+d.h)
+    p0 = p(d.x0)
+    f0 = f(d.x0)
+
+    k0 = xHalf + (d.h**2 * pHalf) / 8 + (d.h**2 * p0) / 4
+    m0 = d.h**2 * pHalf - xHalf
+    pO = d.h * f0 + d.h**2 / 4 * (fHalf + f0)
+
+    return k0, m0, pO
+
+def getRightBoundaryCoeffs():
+    xHalf = getHalfLeft(d.l)
+    pHalf = p(d.l - d.h)
+    fHalf = f(d.l - d.h)
+
+    kN = -xHalf / d.h - d.alphaN - (p(d.l) * d.h) / 4 - d.h * (pHalf + p(d.l)) / 16
+    mN = xHalf / d.h - d.h * (pHalf + p(d.l)) / 16
+    pN = -d.alphaN * d.Tenv - d.h * (3 * f(d.l) + fHalf) / 8
+
+    return kN, mN, pN

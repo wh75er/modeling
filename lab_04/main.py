@@ -1,22 +1,16 @@
 import data as d
-from calculation import t, collocation
+from calculation import calculateY
 import numpy as np
 import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
-    c1, c2, c3 = collocation(6, 7, 8)
 
-    h = 1e-1
+    y_axis = calculateY()
     
-    x_axis = []
-    y_axis = []
+    x_axis = [ x for x in np.arange(d.x0, d.l+d.h, d.h)]
 
-    x = d.x0
-    while x < d.l+h:
-        x_axis.append(x)
-        y_axis.append(t(x, c1, c2, c3))
-
-        x += h
+    print("Len of y : ", len(y_axis))
+    print("Len of x : ", len(x_axis))
 
     plt.plot(x_axis, y_axis)
     plt.show()

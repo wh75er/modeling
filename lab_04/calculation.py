@@ -2,32 +2,46 @@ import data as d
 from functions import *
 import numpy
 
-def t(x, c1, c2, c3):
-    return u0(x) + c1*u1(x) + c2*u2(x) + c3*u3(x)
+"""
+ _____ _
+|_   _| |__   ___  _ __ ___   __ _ ___
+  | | | '_ \ / _ \| '_ ` _ \ / _` / __|
+  | | | | | | (_) | | | | | | (_| \__ \
+  |_| |_| |_|\___/|_| |_| |_|\__,_|___/
+
+       _                  _ _   _
+  __ _| | __ _  ___  _ __(_) |_| |__  _ __ ___
+ / _` | |/ _` |/ _ \| '__| | __| '_ \| '_ ` _ \
+| (_| | | (_| | (_) | |  | | |_| | | | | | | | |
+ \__,_|_|\__, |\___/|_|  |_|\__|_| |_|_| |_| |_|
+         |___/
 
 """
-  ____      _ _                 _   _
- / ___|___ | | | ___   ___ __ _| |_(_) ___  _ __
-| |   / _ \| | |/ _ \ / __/ _` | __| |/ _ \| '_ \
-| |__| (_) | | | (_) | (_| (_| | |_| | (_) | | | |
- \____\___/|_|_|\___/ \___\__,_|\__|_|\___/|_| |_|
 
-"""
+def thomasAlgorithm(A, B, C, D, k0, m0, p0, kN, mN, pN):
+    xi = [-m0/k0]
+    eta = [p0/k0]
 
-def p(x, u, uI, uII):
-    temp = 2*alpha(x)/d.R
-    return k(x) * uII(x) - d.k0/((x-d.kN)**2) * uI(x) - temp*u(x)
+    for i in range(len(A)):
+        xi.append( C[i] / (B[i] - A[i]*xi[i]) )
+        eta.append( (D[i] + A[i]*eta[i]) / (B[i] - A[i]*xi[i]) )
 
-def m(x):
-    temp = 2*alpha(x)/d.R
-    return k(x)*u0II(x) - d.k0/((x-d.kN)**2) * u0I(x) - temp*u0(x) + temp*d.Tenv
+    y = [(pN - mN*eta[-1]) / (kN + mN*xi[-1])]
 
-def collocation(x1, x2, x3):
-    M3 = numpy.array([  [p(x1, u1, u1I, u1II), p(x1, u2, u2I, u2II), p(x1, u3, u3I, u3II)], 
-                        [p(x2, u1, u1I, u1II), p(x2, u2, u2I, u2II), p(x2, u3, u3I, u3II)], 
-                        [p(x3, u1, u1I, u1II), p(x3, u2, u2I, u2II), p(x3, u3, u3I, u3II)]])
-    v3 = numpy.array([m(x1), m(x2), m(x3)])
+    for i in reversed(range(1, len(A))):
+        y.append( xi[i]*y[-1] + eta[i] )
 
-    coeffs = numpy.linalg.solve(M3, v3)
+    y.reverse()
 
-    return coeffs[0], coeffs[1], coeffs[2]
+    return y
+
+def calculateY():
+
+    A, B, C, D = getCoeffs()
+
+    k0, m0, p0 = getLeftBoundaryCoeffs()
+    kN, mN, pN = getRightBoundaryCoeffs()
+
+    y = thomasAlgorithm(A, B, C, D, k0, m0, p0, kN, mN, pN)
+
+    return y
